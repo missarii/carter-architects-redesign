@@ -15,8 +15,8 @@ class ModelBoundary extends Component<{ children: ReactNode }, { failed: boolean
   render() {
     if (this.state.failed) {
       return (
-        <div className="grid h-[300px] place-items-center lg:h-[380px]" aria-label="Building massing diagram (static fallback)">
-          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" stroke="currentColor" className="opacity-60" aria-hidden>
+        <div className="grid h-60 place-items-center lg:h-64" aria-label="Building massing diagram (static fallback)">
+          <svg width="160" height="160" viewBox="0 0 200 200" fill="none" stroke="currentColor" className="opacity-60" aria-hidden>
             <rect x="60" y="90" width="80" height="60" />
             <rect x="70" y="60" width="60" height="30" />
             <rect x="80" y="35" width="40" height="25" />
@@ -82,7 +82,7 @@ export default function Hero() {
           initial={reduce ? false : { opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="relative min-h-[340px] border lg:mt-6 lg:min-h-[440px]"
+          className="relative self-start border lg:mt-6"
           style={{ borderColor: 'color-mix(in srgb, currentColor 15%, transparent)' }}
           aria-label="Interactive 3D building massing model"
         >
@@ -90,13 +90,13 @@ export default function Hero() {
             <span>Massing — Scheme C</span>
             <span className="font-mono">3D study</span>
           </div>
-          <Suspense fallback={<div className="grid h-[300px] place-items-center font-mono text-xs opacity-50 lg:h-[380px]">loading model…</div>}>
+          <Suspense fallback={<div className="grid h-64 place-items-center font-mono text-xs opacity-50 lg:h-72">loading model…</div>}>
             <ModelBoundary>
               <Tower3D />
             </ModelBoundary>
           </Suspense>
           <p className="border-t px-5 py-3 text-[13px] opacity-60" style={{ borderColor: 'color-mix(in srgb, currentColor 15%, transparent)' }}>
-            Wireframe study — tilts as you scroll. Formerly Mark Carter Associates.
+            Wireframe study — tilts as you scroll.
           </p>
         </motion.aside>
       </div>

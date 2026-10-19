@@ -66,8 +66,8 @@ export default function Tower3D() {
   const parallax = useTransform(scrollYProgress, [0, 0.4], [0, 60]);
   if (reduce) {
     return (
-      <div className="grid h-full min-h-[320px] place-items-center border border-current/15" aria-label="Building massing diagram (static)">
-        <svg width="200" height="200" viewBox="0 0 200 200" fill="none" stroke="currentColor" aria-hidden>
+      <div className="grid h-64 place-items-center lg:h-72" aria-label="Building massing diagram (static)">
+        <svg width="180" height="180" viewBox="0 0 200 200" fill="none" stroke="currentColor" aria-hidden>
           <rect x="60" y="90" width="80" height="60" />
           <rect x="70" y="60" width="60" height="30" />
           <rect x="80" y="35" width="40" height="25" />
@@ -77,7 +77,7 @@ export default function Tower3D() {
     );
   }
   return (
-    <motion.div style={{ y: parallax }} className="h-full min-h-[320px] lg:min-h-[420px]" aria-hidden>
+    <motion.div style={{ y: parallax }} className="h-64 overflow-hidden lg:h-72" aria-hidden>
       <Suspense fallback={null}>
         <Canvas camera={{ position: [4.2, 2.4, 5.2], fov: 42 }} dpr={[1, 1.75]} gl={{ antialias: true, alpha: true }}>
           <ambientLight intensity={0.9} />
