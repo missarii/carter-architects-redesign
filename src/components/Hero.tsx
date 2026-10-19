@@ -1,10 +1,33 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, Component, type ReactNode } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowUpRight } from '@phosphor-icons/react';
 import { Eyebrow } from './Reveal';
 import { Aurora, Magnetic, SplitText } from './effects';
 
 const Tower3D = lazy(() => import('./Tower3D'));
+
+/* If WebGL/R3F throws, show the static diagram instead of a black screen. */
+class ModelBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    if (this.state.failed) {
+      return (
+        <div className="grid h-[300px] place-items-center lg:h-[380px]" aria-label="Building massing diagram (static fallback)">
+          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" stroke="currentColor" className="opacity-60" aria-hidden>
+            <rect x="60" y="90" width="80" height="60" />
+            <rect x="70" y="60" width="60" height="30" />
+            <rect x="80" y="35" width="40" height="25" />
+            <line x1="20" y1="150" x2="180" y2="150" />
+          </svg>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 /* Stitch hero spec + Impeccable polish + React-Bits kinetic type:
    aurora depth, SplitText headline, magnetic CTA, lazy 3D massing anchor. */
@@ -68,7 +91,9 @@ export default function Hero() {
             <span className="font-mono">3D study</span>
           </div>
           <Suspense fallback={<div className="grid h-[300px] place-items-center font-mono text-xs opacity-50 lg:h-[380px]">loading model…</div>}>
-            <Tower3D />
+            <ModelBoundary>
+              <Tower3D />
+            </ModelBoundary>
           </Suspense>
           <p className="border-t px-5 py-3 text-[13px] opacity-60" style={{ borderColor: 'color-mix(in srgb, currentColor 15%, transparent)' }}>
             Wireframe study — tilts as you scroll. Formerly Mark Carter Associates.
