@@ -55,32 +55,25 @@ npm run preview  # preview the production build
         └── ui/                  # shadcn-style primitives (button, badge…)
 ```
 
-## 4. How TasteSkill is used here
+## 4. The five premium design systems
 
-TasteSkill ([tasteskill.dev](https://tasteskill.dev) ·
-[github.com/Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill)) is an
-open-source "anti-slop frontend framework" — `SKILL.md` rule files that coding agents
-read before touching UI: typography, spacing, color, layout, motion, dark mode,
-pre-flight checks.
+This build is art-directed by five complementary systems. Each has its own
+philosophy, install path, and concrete footprint in the code:
 
-### 4.1 Installation (all five systems — what was run)
+### 4.1 Installation (all five — what was run)
 
 ```bash
-# 1. TasteSkill core (direction + dials + motion rules)
+# TasteSkill core + premium + Stitch variants
 npx skills add https://github.com/Leonxlnx/taste-skill \
   --skill design-taste-frontend-v2-experimental -y
 npx skills add https://github.com/Leonxlnx/taste-skill \
   --skill redesign-existing-projects -y
-
-# 2. TasteSkill premium variant (calm, whitespace, soft contrast)
 npx skills add https://github.com/Leonxlnx/taste-skill \
   --skill high-end-visual-design -y
-
-# 3. Stitch variant (structured DESIGN.md spec workflow)
 npx skills add https://github.com/Leonxlnx/taste-skill \
   --skill stitch-design-taste -y
 
-# 4. Impeccable (design-director critique floor)
+# Impeccable (design-director critique floor)
 npx skills add pbakaus/impeccable -y
 
 npx skills list   # verify — 5 skill folders under .agents/skills/
@@ -89,32 +82,114 @@ npx skills list   # verify — 5 skill folders under .agents/skills/
 > NOTE: older docs say `--skill "design-taste-frontend"` but v2 renamed it —
 > the old name yields "No matching skills found"; the CLI lists the 12 real names.
 
-React Bits and shadcn/ui are **not skills** — they're code installed as source you own:
-React Bits patterns were hand-rolled into `src/components/effects.tsx` (SplitText,
-Magnetic, SpotlightCard, Aurora); shadcn/ui structure was vendored as
-`src/lib/utils.ts` (`cn()`) + `src/components/ui/` (cva button, badge, card).
+React Bits and shadcn/ui are **not skills** — they're code installed as source you
+own (see §4.6 and §4.7).
+
+### 4.2 System 1 — TasteSkill core (direction + dials + motion rules)
+
+- **What it is:** [tasteskill.dev](https://tasteskill.dev) ·
+  [github.com/Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) — the
+  open-source "anti-slop frontend framework". `SKILL.md` rule files a coding agent
+  reads before touching UI: brief inference, three dials, stack honesty, layout
+  rhythm, motion physics, dark mode, pre-flight checks. MIT licensed.
+- **Design read declared before any code (§0):**
+  > *Trust-first architecture-firm marketing site for Texas commercial clients, with
+  > a premium editorial language, leaning toward Tailwind v4 + Fraunces/Archivo +
+  > restrained motion.*
+- **Dials (§1):** DESIGN_VARIANCE 6 / MOTION_INTENSITY 4 / VISUAL_DENSITY 3 —
+  offset-asymmetric editorial, fluid CSS + scroll choreography, gallery spacing.
+- **Footprint here:** warm paper/ink/copper/pine palette (no purple gradients);
+  Fraunces + Archivo (never Inter + slate); asymmetric 7/5/12 grids instead of
+  3-equal-cards; single-line 64–72px nav; hero fits viewport (≤2-line headline,
+  13-word subtext); one CTA intent site-wide ("Start a project"); zero
+  `window.addEventListener('scroll')` — all scroll via Motion `useScroll`;
+  transform/opacity-only tweens; full `useReducedMotion()` fallbacks; dual-mode
+  dark theme from the start.
 
 This placed versioned rules at `.agents/skills/*/SKILL.md`, pinned in
 `skills-lock.json`. Any compatible agent (Claude Code, Cursor, Codex, OpenCode,
 Windsurf…) reads them automatically.
 
-### 4.2 Design Read (TasteSkill §0) — declared before any code
+### 4.3 System 2 — TasteSkill High-End Visual Design (premium calm)
 
-> *Reading this as: trust-first architecture-firm marketing site for Texas
-> commercial clients, with a premium editorial language, leaning toward
-> Tailwind v4 + Fraunces/Archivo + restrained motion.*
+- **What it is:** a specialized TasteSkill variant for polished, calm,
+  premium-looking interfaces — generous whitespace, soft contrast, refined motion.
+  Persona `Vanguard_UI_Architect`: "$150k+ agency-level experiences, not websites".
+  Install name: `high-end-visual-design` in `Leonxlnx/taste-skill`.
+- **Absolute-zero bans it enforces:** Inter/Roboto/Arial/Helvetica fonts; thick Lucide /
+  FontAwesome icons (we use Phosphor, on its allowed list); generic 1px gray borders
+  and harsh shadows; edge-to-edge sticky navbars; symmetric 3-column grids without
+  whitespace; `linear`/`ease-in-out` transitions and instant state changes.
+- **Variance engine (rolled for this project):** *Editorial Luxury* vibe (warm paper
+  `#F6F1E8`, espresso ink, copper accent, film-grain-grade restraint) ×
+  *Editorial Split* layout (massive type left, interactive model right, single-column
+  collapse under 768px).
+- **Footprint here:** aurora at 20% opacity (never neon); spotlight glow capped at
+  16% copper; section padding minimum `py-16/24` so the layout breathes; CTA uses the
+  button-in-button trailing-icon pattern (`Start a project ↗`); scroll entries are
+  heavy fade-ups (800ms+, staggered); Phosphor icons throughout.
 
-Dials (§1): **DESIGN_VARIANCE 6 / MOTION_INTENSITY 4 / VISUAL_DENSITY 3** —
-offset-asymmetric editorial, fluid CSS + scroll choreography, gallery spacing.
+### 4.4 System 3 — Stitch Design Taste (spec before code)
 
-### 4.3 Rule → implementation map
+- **What it is:** the Google-Stitch-compatible TasteSkill variant. It doesn't style
+  directly — it writes an agent-friendly `DESIGN.md`: atmosphere, color calibration
+  with hex codes, typographic architecture, component behaviors, layout principles,
+  motion philosophy, and an explicit anti-pattern list. Install name:
+  `stitch-design-taste` in `Leonxlnx/taste-skill`.
+- **Rules it enforces:** max 1 accent under 80% saturation; AI purple/blue neon
+  strictly banned; never pure `#000000` (we use night `#141210`); Inter banned for
+  premium contexts (we use Fraunces + Archivo); serif banned in dashboards;
+  asymmetric hero splits; single-column collapse below 768px; labels above inputs.
+- **Footprint here:** the full `DESIGN.md` at the repo root — tokens table, type
+  scale, component stylings, layout principles, motion spec, anti-patterns. It is
+  the single source of truth: read it before editing any UI.
+
+### 4.5 System 4 — Impeccable (design-director critique floor)
+
+- **What it is:** [github.com/pbakaus/impeccable](https://github.com/pbakaus/impeccable)
+  by Peer Bakaus — "design that earns the name out-of-distribution craft". Works as
+  an award-winning design director: production-grade code, a clear POV, and a craft
+  floor with absolute bans. Operates in modes (Persuade / Experience / Operate /
+  Read) and ships sub-commands (`audit`, `harden`, `animate`, `delight`,
+  `overdrive`, `clarify`, `adapt`, `optimize`…).
+- **Core principles applied:** *finish the job* (no placeholders, complete form
+  states); *ambition scaled to the surface* — this is a Persuade surface, so full
+  commitment, but trust-first restraint (no gimmicks on a B2B architecture site);
+  *verify at ship sizes* (production build clean, responsive collapse checked).
+- **Footprint here:** the polish pass over every section — hierarchy audits
+  (eyebrow → display → lede on each block), UX-copy tightening (13-word hero
+  subtext, "One business day reply. No newsletters, no spam."), form hardening
+  (labels above inputs, helper/error slots, AA-contrast borders), and the
+  `PRODUCT.md`-style discipline of documenting decisions in `DESIGN.md`.
+
+### 4.6 System 5a — React Bits (trending kinetic patterns)
+
+- **What it is:** [reactbits.dev](https://reactbits.dev) — animated React components,
+  backgrounds and micro-interactions that install as source you own. Not a skill;
+  patterns are copied and tuned per project (JS/TS, CSS or Tailwind).
+- **Footprint here** — hand-rolled into `src/components/effects.tsx`:
+  `SplitText` (masked word-by-word headline reveals), `Magnetic` (spring-follow
+  CTA, stiffness 180 / damping 14), `SpotlightCard` (cursor-tracking radial glow),
+  `Aurora` (transform-only CSS keyframe drift). All honor reduced-motion.
+
+### 4.7 System 5b — shadcn/ui (owned component foundation)
+
+- **What it is:** [ui.shadcn.com](https://ui.shadcn.com) — composable, accessible
+  components you copy into your repo and customize (Tailwind + Radix philosophy,
+  `cn()` + `cva` variants). Not a skill; structure is vendored as source you own.
+- **Footprint here:** `src/lib/utils.ts` (`cn()` via clsx + tailwind-merge),
+  `src/components/ui/button.tsx` (cva variants: default / outline / ghost / copper;
+  sizes default / sm / lg / icon), `src/components/ui/primitives.tsx` (Badge, Card,
+  SectionHeading). Live in production: Services CTA button + tag badges.
+
+### 4.8 Rule → implementation map (all five)
 
 | TasteSkill rule | Where it lands here |
 |---|---|
 | §0 Anti-defaults: no purple gradients, no centered-hero-mesh, no 3-equal-cards, no Inter+slate | Paper/ink/copper/pine palette; Fraunces+Archivo; 7/5/12 asymmetric grids (`Work.tsx`); 6-tile ledger services grid |
 | §2 Honest stack: Tailwind v4 + `@tailwindcss/vite`, Motion via `motion/react`, self-hosted fonts | `vite.config.ts` has **both** `react()` and `tailwindcss()`; fonts via `@fontsource-variable/*`; icons `@phosphor-icons/react` (allowed list, Lucide avoided) |
 | §4.5 One CTA intent per page | Single intent site-wide: **"Start a project"** (nav, hero, services, contact) |
-| §4.7 Hero discipline: fits viewport, ≤2-line headline, ≤20-word subtext, ≤4 elements, pt-24 cap | `Hero.tsx`: eyebrow + 2-line headline + 13-word subtext + 2 CTAs; client wall is its own section, never in hero |
+| §4.7 Hero discipline: fits viewport, ≤2-line headline, ≤20-word subtext, ≤4 elements | `Hero.tsx`: eyebrow + 2-line headline + 13-word subtext + 2 CTAs; client wall is its own section, never in hero |
 | §4.7 Nav: single line, 64–72px cap | `Nav.tsx`: `h-16 lg:h-[72px]`, 5 short labels, hamburger under `lg` |
 | §4.7 Bento rhythm: vary composition | Services vary copy/badges; Work uses 7/5/12 spans; Practice pairs narrative + 2×2 credentials |
 | §5 Motion: `useScroll`/`useTransform`, `whileInView`; **ban** on window scroll listeners | Zero scroll listeners. DraftingCanvas (line-draw), Hero (parallax), BuildSequence (scroll slabs), Blueprint (drawing path), SectionDivider (loops) |
@@ -122,13 +197,13 @@ offset-asymmetric editorial, fluid CSS + scroll choreography, gallery spacing.
 | §6.B Reduced motion (mandatory) | Every animated component honors `useReducedMotion()` → static final state; CSS kill-switch included |
 | §8 Dark mode from the start | `dark:` pairs everywhere; night `#141210` (not pure black); system default + toggle; parity in both modes |
 | Pre-flight: no emojis/lorem, form contrast, labels above inputs | Real copy only; `Contact.tsx` label-above-input + helper text + AA borders; skip-link |
-| Impeccable floor: finish the job, ambition scaled, verify at ship sizes | No placeholders; trust-first restraint on Operate surfaces; build verified clean |
-| High-end variant: calm premium, whitespace, soft contrast, refined motion | Aurora restraint, spotlight subtlety, gallery `py-24` rhythm, copper-not-neon |
-| Stitch: structured spec before coding | `DESIGN.md` tokens/layout/motion/inventory contract; single CTA intent spec'd |
-| React Bits: kinetic type, magnetic, spotlight, aurora (trending) | `effects.tsx`: SplitText, Magnetic, SpotlightCard, Aurora (CSS keyframes) |
-| shadcn/ui: owned primitives, cva variants, cn() | `lib/utils.ts` + `ui/button.tsx` + `ui/primitives.tsx`; Button/Badge live in Services |
+| High-end: calm premium, whitespace, button-in-button CTA | Aurora 20% restraint, spotlight 16% cap, `py-16/24` breathing room, `Start a project ↗` |
+| Stitch: spec before code | `DESIGN.md` tokens/layout/motion/inventory contract |
+| Impeccable: finish the job, ambition scaled, verify at ship sizes | No placeholders; trust-first restraint; build verified clean |
+| React Bits: kinetic type, magnetic, spotlight, aurora | `effects.tsx`: SplitText, Magnetic, SpotlightCard, Aurora |
+| shadcn/ui: owned primitives, cva variants, cn() | `lib/utils.ts` + `ui/button.tsx` + `ui/primitives.tsx`; live in Services |
 
-### 4.4 Animation inventory (architecture + trending 3D pass)
+### 4.9 Animation inventory (complete)
 
 | Component | Animation | Technique |
 |---|---|---|
@@ -138,15 +213,10 @@ offset-asymmetric editorial, fluid CSS + scroll choreography, gallery spacing.
 | Hero | Aurora depth backdrop | CSS keyframe drift (transform-only) |
 | Practice/Services | Spotlight cards follow cursor | Radial glow at pointer % |
 | Practice/Services | Section titles SplitText on scroll | whileInView stagger |
-| SmoothScroll (NEW) | Buttery page scroll | Lenis lerp 0.1, reduced-motion off |
-
-| Component | Animation | Technique |
-|---|---|---|
+| SmoothScroll | Buttery page scroll | Lenis lerp 0.1, reduced-motion off |
 | DraftingCanvas | 7 elevation lines draw in, staggered | SVG pathLength tween |
 | DraftingCanvas | Compass medallion rotates (60s/rev) | Infinite rotate loop |
 | DraftingCanvas | Section-marker bob | 5s y easeInOut loop |
-| Hero | Word-by-word headline mask reveal | Staggered y 110% → 0 |
-| Hero | Backdrop drifts 2× foreground on scroll | useScroll parallax |
 | BuildSequence | Tower slabs construct phase-by-phase | useScroll + per-slab useTransform |
 | BuildSequence | Crane jib + progress bar grow | scaleX/scaleY from progress |
 | Blueprint | Dashed path draws across nodes | pathLength on whileInView |
@@ -176,9 +246,9 @@ offset-asymmetric editorial, fluid CSS + scroll choreography, gallery spacing.
 
 ## 7. Credits
 
-- Design guidance: TasteSkill v2 + high-end-visual-design + stitch-design-taste
-  (Leon Lin & blueemi, MIT) · Impeccable (pbakaus) · patterns from React Bits ·
-  primitive structure from shadcn/ui.
+- TasteSkill core + high-end-visual-design + stitch-design-taste (Leon Lin & blueemi, MIT).
+- Impeccable (Peer Bakaus, [github.com/pbakaus/impeccable](https://github.com/pbakaus/impeccable)).
+- Patterns from [React Bits](https://reactbits.dev) · structure from [shadcn/ui](https://ui.shadcn.com).
 - 3D: Three.js via @react-three/fiber + drei · Smooth scroll: Lenis.
 - Content: Carter Architects, Inc., Houston TX (theirs — structure preserved).
 - Type: Fraunces & Archivo (OFL) via Fontsource · Icons: Phosphor · Motion: Motion.
