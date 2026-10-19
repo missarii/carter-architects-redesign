@@ -1,15 +1,32 @@
-import { Suspense, useRef } from 'react';
+import { Suspense, useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Line } from '@react-three/drei';
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'motion/react';
 import * as THREE from 'three';
 
 /* Trending 3D: isometric wireframe massing model — the "building being
    designed". Slow rotation + Motion scroll parallax (no raw listeners),
-   lazy-loaded, static SVG fallback under reduced motion. */
+   lazy-loaded, zero drei dependency (drei v10 Line breaks on three latest),
+   static SVG fallback under reduced motion. */
+
+function Column({ position, color }: { position: [number, number, number]; color: string }) {
+  const geo = useMemo(() => {
+    const g = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, -2.2, 0),
+      new THREE.Vector3(0, 1.4, 0),
+    ]);
+    return g;
+  }, []);
+  return (
+    <lineSegments position={position}>
+      <primitive object={geo} attach="geometry" />
+      <lineBasicMaterial color={color} transparent opacity={0.4} />
+    </lineSegments>
+  );
+}
 
 function Massing({ tilt }: { tilt: MotionValue<number> }) {
   const group = useRef<THREE.Group>(null!);
+  const frameGeo = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(2.2, 2.6, 1.6)), []);
   useFrame((state, delta) => {
     group.current.rotation.y += delta * 0.12;
     group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, 0.35 + tilt.get() * 0.5, 0.05);
@@ -17,6 +34,8 @@ function Massing({ tilt }: { tilt: MotionValue<number> }) {
   });
   const copper = '#a35e28';
   const line = '#d9cfbb';
+  const cols: Array<[number, number, number]> = [];
+  for (const x of [-0.9, -0.3, 0.3, 0.9]) for (const z of [-0.6, 0.6]) cols.push([x, 0, z]);
   return (
     <group ref={group} scale={1.1}>
       {[0, 1, 2, 3].map((i) => (
@@ -25,19 +44,16 @@ function Massing({ tilt }: { tilt: MotionValue<number> }) {
           <meshStandardMaterial color={copper} transparent opacity={0.16} roughness={0.4} />
         </mesh>
       ))}
-      <lineSegments>
-        <edgesGeometry args={[new THREE.BoxGeometry(2.2, 2.6, 1.6)]} />
+      <lineSegments geometry={frameGeo}>
         <lineBasicMaterial color={line} transparent opacity={0.85} />
       </lineSegments>
       <mesh position={[1.7, -1.1, 0.3]}>
         <boxGeometry args={[1.1, 0.7, 1.1]} />
         <meshStandardMaterial color={copper} transparent opacity={0.22} roughness={0.4} />
       </mesh>
-      {[-0.9, -0.3, 0.3, 0.9].map((x) =>
-        [-0.6, 0.6].map((z) => (
-          <Line key={`${x}${z}`} points={[[x, -2.2, z], [x, 1.4, z]]} color={line} transparent opacity={0.4} lineWidth={1} />
-        )),
-      )}
+      {cols.map(([x, y, z]) => (
+        <Column key={`${x}${z}`} position={[x, y, z]} color={line} />
+      ))}
       <gridHelper args={[8, 16, line, line]} position={[0, -2.25, 0]} />
     </group>
   );
@@ -66,9 +82,7 @@ export default function Tower3D() {
         <Canvas camera={{ position: [4.2, 2.4, 5.2], fov: 42 }} dpr={[1, 1.75]} gl={{ antialias: true, alpha: true }}>
           <ambientLight intensity={0.9} />
           <directionalLight position={[5, 8, 4]} intensity={1.4} />
-          <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.5}>
-            <Massing tilt={tilt} />
-          </Float>
+          <Massing tilt={tilt} />
         </Canvas>
       </Suspense>
     </motion.div>

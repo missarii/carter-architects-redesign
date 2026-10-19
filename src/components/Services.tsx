@@ -1,7 +1,6 @@
 import { ArrowUpRight } from '@phosphor-icons/react';
 import { Eyebrow, Reveal } from './Reveal';
 import { SpotlightCard, SplitText } from './effects';
-import { Button } from './ui/button';
 import { Badge } from './ui/primitives';
 import { SERVICES } from '../data';
 
@@ -17,11 +16,12 @@ export default function Services() {
             <h2 className="max-w-xl font-display text-3xl font-medium tracking-tight lg:text-5xl">
               <SplitText text="Everything from feasibility to final punch." />
             </h2>
-            <Button variant="outline" size="sm" className="border-white/25 text-paper hover:border-amber-200 hover:text-amber-200" asChild={false}>
-              <a href="#contact">
-                Start a project <ArrowUpRight size={15} />
-              </a>
-            </Button>
+            <a
+              href="#contact"
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap border border-white/25 px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-paper transition-colors hover:border-amber-200 hover:text-amber-200 [&_svg]:size-4 [&_svg]:shrink-0"
+            >
+              Start a project <ArrowUpRight size={15} />
+            </a>
           </div>
         </Reveal>
         <div className="mt-12 grid gap-px overflow-hidden border border-white/15 bg-white/15 md:grid-cols-2 lg:grid-cols-3">
