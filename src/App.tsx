@@ -1,5 +1,6 @@
 import Nav from './components/Nav';
 import Hero from './components/Hero';
+import SmoothScroll from './components/SmoothScroll';
 import SectionDivider from './components/SectionDivider';
 import Practice from './components/Practice';
 import Services from './components/Services';
@@ -16,6 +17,7 @@ export default function App() {
       <a href="#contact" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[70] focus:bg-ink focus:px-4 focus:py-2 focus:text-paper">
         Skip to contact
       </a>
+      <SmoothScroll />
       <Nav />
       <main>
         <Hero />

@@ -79,3 +79,26 @@ body {
 /* z-index scale (TasteSkill restraint): nav 40, mobile menu 50, grain 60 */
 .z-nav { z-index: 40; }
 .z-menu { z-index: 50; }
+
+/* React-Bits-style aurora drift — transform-only keyframes, GPU cheap */
+@media (prefers-reduced-motion: no-preference) {
+  .aurora-a {
+    background: radial-gradient(38% 42% at 50% 42%, rgb(163 94 40 / 0.2), transparent 70%);
+    animation: aurora-drift-a 14s ease-in-out infinite alternate;
+  }
+  .aurora-b {
+    background: radial-gradient(30% 34% at 55% 60%, rgb(30 51 41 / 0.35), transparent 70%);
+    animation: aurora-drift-b 18s ease-in-out infinite alternate;
+  }
+}
+@keyframes aurora-drift-a {
+  from { transform: translate3d(-4%, -2%, 0) scale(1); }
+  to { transform: translate3d(4%, 3%, 0) scale(1.08); }
+}
+@keyframes aurora-drift-b {
+  from { transform: translate3d(3%, 2%, 0) scale(1.05); }
+  to { transform: translate3d(-3%, -3%, 0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aurora-a, .aurora-b { animation: none; }
+}

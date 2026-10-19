@@ -1,4 +1,5 @@
 import { Eyebrow, Reveal } from './Reveal';
+import { SplitText, SpotlightCard } from './effects';
 import { CREDENTIALS } from '../data';
 
 export default function Practice() {
@@ -8,7 +9,7 @@ export default function Practice() {
         <Reveal>
           <Eyebrow>The practice</Eyebrow>
           <h2 className="mt-4 font-display text-3xl font-medium tracking-tight lg:text-4xl">
-            An experienced, accredited firm — without the runaround.
+            <SplitText text="An experienced, accredited firm — without the runaround." />
           </h2>
         </Reveal>
         <div className="space-y-6">
@@ -22,10 +23,12 @@ export default function Practice() {
           <dl className="grid gap-px overflow-hidden border sm:grid-cols-2" style={{ borderColor: 'color-mix(in srgb, currentColor 15%, transparent)', background: 'color-mix(in srgb, currentColor 15%, transparent)' }}>
             {CREDENTIALS.map((c, i) => (
               <Reveal key={c.k} delay={i * 0.05} className="bg-paper dark:bg-night">
-                <div className="h-full p-5">
-                  <dt className="text-[11px] font-semibold uppercase tracking-[0.22em] text-copper">{c.k}</dt>
-                  <dd className="mt-2 text-[15px] leading-relaxed">{c.v}</dd>
-                </div>
+                <SpotlightCard className="h-full">
+                  <div className="h-full p-5">
+                    <dt className="text-[11px] font-semibold uppercase tracking-[0.22em] text-copper">{c.k}</dt>
+                    <dd className="mt-2 text-[15px] leading-relaxed">{c.v}</dd>
+                  </div>
+                </SpotlightCard>
               </Reveal>
             ))}
           </dl>

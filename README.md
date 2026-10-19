@@ -2,7 +2,8 @@
 
 A modern, editorial redesign of [carterarchitectsinc.com](https://carterarchitectsinc.com/) —
 a full-range architecture & design firm in Houston, Texas — built with **React + Vite +
-Tailwind CSS v4 + Motion**, and art-directed by **TasteSkill**.
+Tailwind CSS v4 + Motion + Three.js**, and art-directed by **five premium design systems**:
+TasteSkill, Impeccable, Stitch, React Bits patterns and shadcn/ui primitives.
 
 > **Live:** `npm run dev` → http://localhost:5174/
 
@@ -14,9 +15,9 @@ This rebuild preserves **100% of the real content** — services, credentials,
 
 | Section | Content (all real, from the live site) |
 |---|---|
-| Hero | Tagline + animated drafting canvas |
-| Practice | Mark Carter 30+ yrs, TX license, RAS, Texas A&M, AIA |
-| Services | Programming, As-Builts/CAD, Docs, TI & Interiors, CA, Code/ADA |
+| Hero | SplitText kinetic headline + aurora + lazy 3D massing model |
+| Practice | SplitText title + spotlight credential tiles |
+| Services | Spotlight ledger tiles + SplitText title + shadcn badges |
 | Build Sequence | 4-phase process with scroll-driven tower |
 | Blueprint | Process band: Survey → Plan → Document → Administer |
 | Work | Industrial & Oil/Gas, Corporate Office, Restaurant & Retail |
@@ -38,16 +39,20 @@ npm run preview  # preview the production build
 ## 3. Project structure
 
 ```
-├── index.html, vite.config.ts, package.json, skills-lock.json
-├── .agents/skills/              # installed TasteSkill SKILL.md files
-│   ├── design-taste-frontend-v2-experimental/
-│   └── redesign-existing-projects/
+├── index.html, vite.config.ts, package.json, skills-lock.json, DESIGN.md
+├── .agents/skills/              # installed design-skill SKILL.md files
+│   ├── design-taste-frontend-v2-experimental/ + redesign-existing-projects
+│   ├── high-end-visual-design/ + stitch-design-taste (TasteSkill variants)
+│   └── impeccable/              # pbakaus/impeccable
 └── src/
     ├── main.tsx, App.tsx, index.css, theme.tsx, data.ts
+    ├── lib/utils.ts             # shadcn-style cn()
     └── components/
-        ├── Nav, Hero, DraftingCanvas, Practice, Services
-        ├── BuildSequence, Blueprint, SectionDivider
-        ├── Work, Clients, Contact, Footer, Reveal
+        ├── Nav, Hero, Tower3D (lazy 3D), SmoothScroll (Lenis)
+        ├── DraftingCanvas, Practice, Services, BuildSequence
+        ├── Blueprint, SectionDivider, Work, Clients, Contact, Footer
+        ├── Reveal, effects (SplitText/Magnetic/Spotlight/Aurora)
+        └── ui/                  # shadcn-style primitives (button, badge…)
 ```
 
 ## 4. How TasteSkill is used here
@@ -58,17 +63,36 @@ open-source "anti-slop frontend framework" — `SKILL.md` rule files that coding
 read before touching UI: typography, spacing, color, layout, motion, dark mode,
 pre-flight checks.
 
-### 4.1 Installation (what was run in this project)
+### 4.1 Installation (all five systems — what was run)
 
 ```bash
-# NOTE: older docs say --skill "design-taste-frontend" but v2 renamed it.
-# The old name yields "No matching skills found" — use these:
+# 1. TasteSkill core (direction + dials + motion rules)
 npx skills add https://github.com/Leonxlnx/taste-skill \
   --skill design-taste-frontend-v2-experimental -y
 npx skills add https://github.com/Leonxlnx/taste-skill \
   --skill redesign-existing-projects -y
-npx skills list   # verify
+
+# 2. TasteSkill premium variant (calm, whitespace, soft contrast)
+npx skills add https://github.com/Leonxlnx/taste-skill \
+  --skill high-end-visual-design -y
+
+# 3. Stitch variant (structured DESIGN.md spec workflow)
+npx skills add https://github.com/Leonxlnx/taste-skill \
+  --skill stitch-design-taste -y
+
+# 4. Impeccable (design-director critique floor)
+npx skills add pbakaus/impeccable -y
+
+npx skills list   # verify — 5 skill folders under .agents/skills/
 ```
+
+> NOTE: older docs say `--skill "design-taste-frontend"` but v2 renamed it —
+> the old name yields "No matching skills found"; the CLI lists the 12 real names.
+
+React Bits and shadcn/ui are **not skills** — they're code installed as source you own:
+React Bits patterns were hand-rolled into `src/components/effects.tsx` (SplitText,
+Magnetic, SpotlightCard, Aurora); shadcn/ui structure was vendored as
+`src/lib/utils.ts` (`cn()`) + `src/components/ui/` (cva button, badge, card).
 
 This placed versioned rules at `.agents/skills/*/SKILL.md`, pinned in
 `skills-lock.json`. Any compatible agent (Claude Code, Cursor, Codex, OpenCode,
@@ -98,8 +122,23 @@ offset-asymmetric editorial, fluid CSS + scroll choreography, gallery spacing.
 | §6.B Reduced motion (mandatory) | Every animated component honors `useReducedMotion()` → static final state; CSS kill-switch included |
 | §8 Dark mode from the start | `dark:` pairs everywhere; night `#141210` (not pure black); system default + toggle; parity in both modes |
 | Pre-flight: no emojis/lorem, form contrast, labels above inputs | Real copy only; `Contact.tsx` label-above-input + helper text + AA borders; skip-link |
+| Impeccable floor: finish the job, ambition scaled, verify at ship sizes | No placeholders; trust-first restraint on Operate surfaces; build verified clean |
+| High-end variant: calm premium, whitespace, soft contrast, refined motion | Aurora restraint, spotlight subtlety, gallery `py-24` rhythm, copper-not-neon |
+| Stitch: structured spec before coding | `DESIGN.md` tokens/layout/motion/inventory contract; single CTA intent spec'd |
+| React Bits: kinetic type, magnetic, spotlight, aurora (trending) | `effects.tsx`: SplitText, Magnetic, SpotlightCard, Aurora (CSS keyframes) |
+| shadcn/ui: owned primitives, cva variants, cn() | `lib/utils.ts` + `ui/button.tsx` + `ui/primitives.tsx`; Button/Badge live in Services |
 
-### 4.4 Animation inventory (the architecture-level motion pass)
+### 4.4 Animation inventory (architecture + trending 3D pass)
+
+| Component | Animation | Technique |
+|---|---|---|
+| Tower3D (NEW) | Rotating wireframe massing model, scroll tilt + parallax | R3F + drei Float/Line, lazy chunk, Motion useScroll |
+| Hero | SplitText kinetic headline (rotating word reveal) | React-Bits-style masked stagger |
+| Hero | Magnetic CTA button | Spring-follow pointer (180/14) |
+| Hero | Aurora depth backdrop | CSS keyframe drift (transform-only) |
+| Practice/Services | Spotlight cards follow cursor | Radial glow at pointer % |
+| Practice/Services | Section titles SplitText on scroll | whileInView stagger |
+| SmoothScroll (NEW) | Buttery page scroll | Lenis lerp 0.1, reduced-motion off |
 
 | Component | Animation | Technique |
 |---|---|---|
@@ -137,8 +176,10 @@ offset-asymmetric editorial, fluid CSS + scroll choreography, gallery spacing.
 
 ## 7. Credits
 
-- Design guidance: [TasteSkill](https://tasteskill.dev) by Leon Lin & blueemi (MIT) —
-  `design-taste-frontend-v2-experimental`.
+- Design guidance: TasteSkill v2 + high-end-visual-design + stitch-design-taste
+  (Leon Lin & blueemi, MIT) · Impeccable (pbakaus) · patterns from React Bits ·
+  primitive structure from shadcn/ui.
+- 3D: Three.js via @react-three/fiber + drei · Smooth scroll: Lenis.
 - Content: Carter Architects, Inc., Houston TX (theirs — structure preserved).
 - Type: Fraunces & Archivo (OFL) via Fontsource · Icons: Phosphor · Motion: Motion.
 
