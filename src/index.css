@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-display: "Fraunces Variable", "Georgia", serif;
+  --font-sans: "Archivo Variable", "system-ui", sans-serif;
+  --font-mono: "Archivo Variable", monospace;
+
+  --color-paper: #f6f1e8;
+  --color-paper-deep: #ece4d4;
+  --color-ink: #1c1917;
+  --color-ink-soft: #44403c;
+  --color-line: #d9cfbb;
+  --color-copper: #a35e28;
+  --color-copper-deep: #7c4418;
+  --color-pine: #1e3329;
+  --color-pine-deep: #13211b;
+  --color-night: #141210;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.dark body,
+.dark {
+  background: var(--color-night);
+}
+
+::selection {
+  background: #a35e28;
+  color: #fff;
+}
+
+/* TasteSkill: restrained motion, transform+opacity only */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    transition:
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* thin architectural rules */
+.rule {
+  border-color: color-mix(in srgb, currentColor 16%, transparent);
+}
+
+/* blueprint grid texture — static, pointer-events none only via usage */
+.blueprint-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* z-index scale (TasteSkill restraint): nav 40, mobile menu 50, grain 60 */
+.z-nav { z-index: 40; }
+.z-menu { z-index: 50; }
